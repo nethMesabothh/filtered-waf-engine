@@ -11,7 +11,19 @@
 
 #include <string>
 
+enum class RuleTarget {
+    Path,
+    Body
+};
+
+enum class RuleAction {
+    Allow,
+    Block,
+};
+
 struct Rule {
     int id;
+    RuleTarget target;
     std::string pattern;
+    RuleAction action;
 };
