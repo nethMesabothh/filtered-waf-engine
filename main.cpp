@@ -13,7 +13,7 @@ int main() {
 
     WafRequest request1{
         .method = "POST",
-        .path = "secret/login",
+        .path = "admin/login",
         .body = "query=drop table users"
     };
 
@@ -22,18 +22,14 @@ int main() {
             {
                 .id = 100,
                 .target = RuleTarget::Path,
-                .pattern = "secret",
-                .action = RuleAction::Block
-            },
-            {
-                .id = 101,
-                .target = RuleTarget::Path,
+                .matcher = MatcherType::String,
                 .pattern = "admin",
                 .action = RuleAction::Block
             },
             {
-                .id = 102,
+                .id = 101,
                 .target = RuleTarget::Body,
+                .matcher = MatcherType::String,
                 .pattern = "drop table",
                 .action = RuleAction::Block
             }

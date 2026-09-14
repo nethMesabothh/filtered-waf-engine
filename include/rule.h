@@ -21,9 +21,14 @@ enum class RuleAction {
     Block,
 };
 
+enum class MatcherType {
+    String
+};
+
 struct Rule {
     int id;
     RuleTarget target;
+    MatcherType matcher;
     std::string pattern;
     RuleAction action;
 };

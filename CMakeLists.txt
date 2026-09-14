@@ -10,4 +10,7 @@ add_executable(filtered_waf_engine main.cpp
         src/engine.cpp
         include/decision.h
         include/rule_set.h
+        include/string_matcher.h
+        src/string_matcher.cpp
+        include/matcher.h
 )
