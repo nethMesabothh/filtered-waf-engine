@@ -9,12 +9,11 @@
 
 //constructor
 Pcre2Matcher::Pcre2Matcher(std::string pattern)
-    : compiledCode_{ nullptr, pcre2_code_free }
-{
+    : compiledCode_{nullptr, pcre2_code_free} {
     int errorCode = 0;
     PCRE2_SIZE errorOffset = 0;
 
-    pcre2_code* rawCode = pcre2_compile(
+    pcre2_code *rawCode = pcre2_compile(
         reinterpret_cast<PCRE2_SPTR>(pattern.data()),
         pattern.size(),
         0,
@@ -22,6 +21,25 @@ Pcre2Matcher::Pcre2Matcher(std::string pattern)
         &errorOffset,
         nullptr
     );
+
+    if (rawCode == nullptr) {
+        PCRE2_UCHAR errorMessage[256];
+        pcre2_get_error_message(
+            errorCode,
+            errorMessage,
+            sizeof(errorMessage)
+        );
+
+        throw std::runtime_error(
+            "Invalid PCRE2 pattern at offset "
+            + std::to_string(errorOffset)
+            + ": "
+            + reinterpret_cast<const char *>(
+                errorMessage
+            )
+        );
+    };
+
 
     compiledCode_.reset(rawCode);
 }
@@ -33,7 +51,7 @@ bool Pcre2Matcher::matches(std::string_view input) const {
     }
 
     using Pcre2MatchDataPtr =
-        std::unique_ptr<pcre2_match_data, decltype(&pcre2_match_data_free)>;
+            std::unique_ptr<pcre2_match_data, decltype(&pcre2_match_data_free)>;
 
     Pcre2MatchDataPtr matchData{
         pcre2_match_data_create_from_pattern(compiledCode_.get(), nullptr),

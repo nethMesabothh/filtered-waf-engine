@@ -14,52 +14,61 @@ int main() {
 
     RuleSet ruleSet{
         .rules = {
-                {
-                    .id = 100,
-                    .target = RuleTarget::Path,
-                    .matcher = MatcherType::String,
-                    .pattern = "admin",
-                    .action = RuleAction::Block
-                },
-                {
-                    .id = 101,
-                    .target = RuleTarget::Body,
-                    .matcher = MatcherType::String,
-                    .pattern = "drop table",
-                    .action = RuleAction::Block
-                },
-                {
-                    .id = 102,
-                    .target = RuleTarget::Body,
-                    .matcher = MatcherType::Pcre2,
-                    .pattern = R"((drop\s+table)",
-                    .action = RuleAction::Block
-                }
+            {
+                .id = 100,
+                .target = RuleTarget::Path,
+                .matcher = MatcherType::String,
+                .pattern = "admin",
+                .action = RuleAction::Block
+            },
+            {
+                .id = 101,
+                .target = RuleTarget::Body,
+                .matcher = MatcherType::String,
+                .pattern = "drop table",
+                .action = RuleAction::Block
+            },
+            {
+                .id = 102,
+                .target = RuleTarget::Body,
+                .matcher = MatcherType::Pcre2,
+                .pattern = R"(drop\s+table)",
+                .action = RuleAction::Block
+            }
         }
     };
 
-    RulePreparer preparer;
 
-    PreparedRuleSet preparedRuleSet =
-        preparer.prepare(ruleSet);
+    try {
+        RulePreparer preparer;
+        PreparedRuleSet preparedRuleSet =
+                preparer.prepare(ruleSet);
 
-    Engine engine;
+        Engine engine;
 
-    Decision decision =
-        engine.inspect(
-            request,
-            preparedRuleSet
-        );
+        Decision decision =
+                engine.inspect(
+                    request,
+                    preparedRuleSet
+                );
 
-    if (decision.action == DecisionAction::Block) {
-        std::cout << "Result: BLOCK\n";
-        std::cout
-            << "Matched RuleID: "
-            << decision.matchedRuleId
-            << '\n';
-    } else {
-        std::cout << "Result: ALLOW\n";
+        if (decision.action == DecisionAction::Block) {
+            std::cout << "Result: BLOCK\n";
+            std::cout
+                    << "Matched RuleID: "
+                    << decision.matchedRuleId
+                    << '\n';
+        } else {
+            std::cout << "Result: ALLOW\n";
+        }
+
+        return 0;
+    } catch (const std::exception &e) {
+        std::cerr
+                << "Rule preparation failed: "
+                << e.what()
+                << '\n';
+
+        return 1;
     }
-
-    return 0;
 }
