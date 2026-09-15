@@ -7,10 +7,13 @@
 
 #endif //FILTERED_WAF_ENGINE_PCRE2_MATCHER_H
 
+#define PCRE2_CODE_UNIT_WIDTH 8
+#include <pcre2.h>
 #pragma once
 
 #include <string>
 #include <string_view>
+#include <memory>
 #include "matcher/matcher.h"
 
 class Pcre2Matcher : public Matcher {
@@ -20,5 +23,7 @@ public:
     bool matches(std::string_view input) const override;
 
 private:
-    std::string pattern_;
+    using Pcre2CodePtr = std::unique_ptr<pcre2_code, decltype(&pcre2_code_free)>;
+
+    Pcre2CodePtr compiledCode_;
 };

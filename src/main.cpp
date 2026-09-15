@@ -32,7 +32,7 @@ int main() {
                     .id = 102,
                     .target = RuleTarget::Body,
                     .matcher = MatcherType::Pcre2,
-                    .pattern = R"(drop\s+table)",
+                    .pattern = R"((drop\s+table)",
                     .action = RuleAction::Block
                 }
         }
