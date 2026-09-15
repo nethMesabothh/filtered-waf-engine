@@ -9,7 +9,7 @@
 
 #pragma once
 #include <vector>
-#include "rule.h"
+#include "rule/rule.h"
 
 struct RuleSet {
     std::vector<Rule> rules;

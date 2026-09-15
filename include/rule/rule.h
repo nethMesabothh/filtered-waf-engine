@@ -22,7 +22,8 @@ enum class RuleAction {
 };
 
 enum class MatcherType {
-    String
+    String,
+    Pcre2
 };
 
 struct Rule {

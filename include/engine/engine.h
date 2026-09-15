@@ -8,20 +8,19 @@
 #endif //FILTERED_WAF_ENGINE_ENGINE_H
 
 #pragma once
-#include "waf_request.hpp"
-#include "decision.h"
-#include "rule_set.h"
-#include "matcher.h"
-#include "string_matcher.h"
+#include "core/waf_request.hpp"
+#include "core/decision.h"
+#include "rule/rule_set.h"
+#include "matcher/matcher.h"
+#include "matcher/string_matcher.h"
+#include "rule/prepared_rule_set.h"
+#include "matcher/pcre2_matcher.h"
 
 class Engine {
 public:
-    Decision inspect(const WafRequest &request, const RuleSet &rules) const;
+    Decision inspect(const WafRequest &request, const PreparedRuleSet &rules) const;
 
 private:
     std::string_view getTargetValue(const WafRequest &request, RuleTarget target) const;
 
-    const Matcher &getMatcher(MatcherType type) const;
-
-    StringMatcher stringMatcher_;
 };

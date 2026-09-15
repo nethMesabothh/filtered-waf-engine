@@ -1,0 +1,11 @@
+cmake-build-*/
+build/
+deps/
+_deps/
+*.obj
+*.o
+*.exe
+*.a
+*.dll
+.idea/workspace.xml
+.idea/shelf/

@@ -12,7 +12,7 @@
 
 class Matcher {
 public:
-    virtual bool matches(std::string_view input, std::string_view pattern) const = 0;
+    virtual bool matches(std::string_view input) const = 0;
 
     virtual ~Matcher() = default;
 };
