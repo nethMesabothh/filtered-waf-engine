@@ -73,6 +73,7 @@ target_link_libraries(
 add_executable(filtered_waf_tests
         tests/matcher/string_matcher_test.cpp
         tests/matcher/pcre2_matcher_test.cpp
+        tests/rule/rule_preparer_test.cpp
 )
 
 target_link_libraries(
